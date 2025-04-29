@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; //shared_preferences for persistent history on web (if other platform was wanted, use path_provider)
 
 void main() {
   runApp(const MyApp());
@@ -33,10 +34,38 @@ class _MyHomePageState extends State<MyHomePage> {
   final FocusNode _focusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    _loadHistory(); //load history from shared preferences
+  }
+
+  @override 
   void dispose() {
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedHistory = prefs.getStringList('palindrome_history') ?? [];
+    setState(() {
+      _history.addAll(storedHistory);
+    });
+  }
+
+  Future<void> _saveHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('palindrome_history', _history);
+  }
+
+  Future<void> _clearHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('palindrome_history');
+    setState(() {
+      _history.clear();
+      _result = '';
+    });
   }
 
   bool _isPalindrome(String input) {
@@ -54,15 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _result = result;
     }); // updates state
 
+    _saveHistory(); //save history
     _controller.clear(); //clears the text field
     FocusScope.of(context).requestFocus(_focusNode); //sets focus text field
-  }
-
-  void _clearHistory() {
-    setState(() {
-      _history.clear(); //clear history
-      _result = ''; //clear result
-    });
   }
 
   Widget build(BuildContext context) {
