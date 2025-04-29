@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; //shared_preferences for persistent history on web (if other platform was wanted, use path_provider)
+import 'package:shared_preferences/shared_preferences.dart'; //shared_preferences for persistent history on web (if other platform was wanted, use path_provider to save to a file)
 
 void main() {
   runApp(const MyApp());
@@ -8,11 +8,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, //hides debug banner
       title: 'Palindrome Checker',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromRGBO(194, 109, 187,1)), //color scheme set to HerFuture color
@@ -31,10 +30,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController();
-  String _result = '';
-  final List<String> _history = [];
   final FocusNode _focusNode = FocusNode();
-
+  final List<String> _history = [];
+  
+  String _result = '';
+  
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _loadHistory() async {
     final prefs = await SharedPreferences.getInstance();
-    final storedHistory = prefs.getStringList('palindrome_history') ?? [];
+    final storedHistory = prefs.getStringList('palindrome_history') ?? []; // if history exists, load it, otherwise use an empty list
     setState(() {
       _history.addAll(storedHistory);
     });
@@ -71,8 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   bool _isPalindrome(String input) {
-    final cleaned = input.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), ''); // preprocessing the input (removes all non-alphanumeric characters and converts to lowercase)
+    final cleaned = input.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), ''); // preprocessing the input (removes all non-alphanumeric characters and converts to lowercase) 
     return cleaned == cleaned.split('').reversed.join(); //checks if the cleaned string is equal to its reverse
+
+    // personal note: don't nod is not a palindrome, atleast not according to my dutch teacher. My favorite palindrome is partyboobytrap
   }
 
   void _checkPalindrome() {
@@ -92,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Palindrome Checker'),
@@ -103,8 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+
         body: Column(
           children:[
+
             TextField(
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.all(16),
@@ -115,9 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onSubmitted: (_) => _checkPalindrome(),
               focusNode: _focusNode,
             ),
+
             SizedBox(height: 16), // spacer
             ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
+
             Text(_result),
+            
             ListView(
               shrinkWrap: true,
               children: _history.map((item) => ListTile(title: Text(item))).toList(),
