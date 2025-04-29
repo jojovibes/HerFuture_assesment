@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }); // updates state
 
     _controller.clear(); //clears the text field
-    FocusScope.of(context).requestFocus(_focusNode); //sets focus to text field
+    FocusScope.of(context).requestFocus(_focusNode); //sets focus text field
   }
 
   Widget build(BuildContext context) {
