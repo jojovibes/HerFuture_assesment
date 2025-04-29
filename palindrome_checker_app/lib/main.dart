@@ -58,6 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
     FocusScope.of(context).requestFocus(_focusNode); //sets focus text field
   }
 
+  void _clearHistory() {
+    setState(() {
+      _history.clear(); //clear history
+      _result = ''; //clear result
+    });
+  }
+
   Widget build(BuildContext context) {
   
     return Scaffold(
@@ -73,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             focusNode: _focusNode,
           ),
           ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
+          ElevatedButton.icon(onPressed: _clearHistory, icon: const Icon(Icons.delete), label: const Text('Clear History')),
           Text(_result),
           ListView(
             shrinkWrap: true,
