@@ -30,6 +30,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController();
   String _result = '';
   final List<String> _history = [];
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   bool _isPalindrome(String input) {
     final cleaned = input.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), ''); // preprocessing the input (removes all non-alphanumeric characters and converts to lowercase)
@@ -47,9 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }); // updates state
 
     _controller.clear(); //clears the text field
+    FocusScope.of(context).requestFocus(_focusNode); //sets focus to text field
   }
 
-  @override
   Widget build(BuildContext context) {
   
     return Scaffold(
@@ -62,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
           TextField(
             controller: _controller,
             onSubmitted: (_) => _checkPalindrome(),
+            focusNode: _focusNode,
           ),
           ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
           Text(_result),
