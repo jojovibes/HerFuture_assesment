@@ -12,10 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Palindrome Checker',
       theme: ThemeData(
-    
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Palindrome Checker home page'),
+      home: const MyHomePage(),
     );
   }
 }
@@ -28,14 +27,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final TextEditingController _controller = TextEditingController();
+  String _result = '';
 
-  void _incrementCounter() {
-    setState(() {
-  
-      _counter++;
-    });
-  }
+   void _checkPalindrome() {
+    //function to check if the input is a palindrome
+    String input = _controller.text;
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Palindrome Checker'),
       ),
-      body: Center(
-      
-        child: Column(
-        
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: Column(
+        children:[
+          TextField(
+            controller: _controller,
+          ),
+          ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
+          Text(_result),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), 
     );
   }
 }
