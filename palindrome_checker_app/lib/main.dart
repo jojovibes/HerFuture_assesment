@@ -61,9 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
         children:[
           TextField(
             controller: _controller,
+            onSubmitted: (_) => _checkPalindrome(),
           ),
           ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
           Text(_result),
+          ListView(
+            shrinkWrap: true,
+            children: _history.map((item) => ListTile(title: Text(item))).toList(),
+          ),
         ],
       ),
     );
