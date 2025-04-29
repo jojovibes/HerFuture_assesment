@@ -8,9 +8,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Palindrome Checker',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -89,28 +91,38 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget build(BuildContext context) {
-  
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Palindrome Checker'),
-      ),
-      body: Column(
-        children:[
-          TextField(
-            controller: _controller,
-            onSubmitted: (_) => _checkPalindrome(),
-            focusNode: _focusNode,
-          ),
-          ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
-          ElevatedButton.icon(onPressed: _clearHistory, icon: const Icon(Icons.delete), label: const Text('Clear History')),
-          Text(_result),
-          ListView(
-            shrinkWrap: true,
-            children: _history.map((item) => ListTile(title: Text(item))).toList(),
-          ),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('Palindrome Checker'),
+          actions: [
+            TextButton.icon(
+              onPressed: _clearHistory,
+              icon: const Icon(Icons.delete),
+              label: Text('Clear History', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+            ),
+          ],
+        ),
+        body: Column(
+          children:[
+            TextField(
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(16),
+                labelText: 'Enter text',
+                hintText: 'Type something...',
+              ),
+              controller: _controller,
+              onSubmitted: (_) => _checkPalindrome(),
+              focusNode: _focusNode,
+            ),
+            ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
+            Text(_result),
+            ListView(
+              shrinkWrap: true,
+              children: _history.map((item) => ListTile(title: Text(item))).toList(),
+            ),
+          ],
+        ),
+      );
   }
 }
