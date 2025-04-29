@@ -115,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onSubmitted: (_) => _checkPalindrome(),
               focusNode: _focusNode,
             ),
+            SizedBox(height: 16), // spacer
             ElevatedButton(onPressed: _checkPalindrome, child: const Text('Submit')),
             Text(_result),
             ListView(
