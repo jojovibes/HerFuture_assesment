@@ -29,6 +29,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController();
   String _result = '';
+  final List<String> _history = [];
 
   bool _isPalindrome(String input) {
     final cleaned = input.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), ''); // preprocessing the input (removes all non-alphanumeric characters and converts to lowercase)
@@ -41,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final result = isPalindrome ? '✅ "$input" is a palindrome.' : '❌ "$input" is not a palindrome.';
 
     setState(() {
+      _history.insert(0, result); //add result to histroy
       _result = result;
     }); // updates state
 
